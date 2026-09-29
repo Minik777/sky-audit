@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: interm_forecast_vs_actual
+    description: "Прогноз и факт рядом, с ошибками прогноза"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_id, target_time, forecast_made_at]
+    columns:
+      - name: city_id
+        data_tests: [not_null]
+      - name: city_name
+        description: "Если пусто — город не нашёлся при джойне"
+        data_tests: [not_null]

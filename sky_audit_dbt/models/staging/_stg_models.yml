@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_forecasts
+    description: "Прогнозы погоды: один прогноз на город, целевой час и час запроса"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_id, target_time, forecast_hour]
+    columns:
+      - name: city_id
+        description: "ID города"
+        data_tests: [not_null]
+      - name: target_time
+        description: "Час, на который сделан прогноз"
+        data_tests: [not_null]
+      - name: horizon_hour
+        description: "Сколько часов до целевого часа в момент прогноза"
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 168
+      - name: precipitation
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: wind_speed
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+  - name: stg_actuals
+    description: "Фактическая погода: один замер на город и час"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_id, actual_hour]
+    columns:
+      - name: city_id
+        data_tests: [not_null]
+      - name: actual_hour
+        description: "Замер, округлённый до ближайшего часа"
+        data_tests: [not_null]
+      - name: temperature
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: -90
+                max_value: 60
+      - name: precipitation
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value 0
+      - name: wind_speed
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+  - name: stg_cities
+    description: "Справочник городов"
+    columns:
+      - name: city_id
+        data_tests: [not_null, unique]
+      - name: city_name
+        data_tests: [not_null]
+

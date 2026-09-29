@@ -1,0 +1,19 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Секреты
+.env
+
+# PyCharm
+.idea/
+
+# Airflow
+logs/
+
+# dbt
+sky_audit_dbt/target/
+sky_audit_dbt/dbt_packages/
+sky_audit_dbt/logs/
+sky_audit_dbt/.user.yml

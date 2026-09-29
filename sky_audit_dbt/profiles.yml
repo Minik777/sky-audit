@@ -1,0 +1,22 @@
+sky_audit_dbt:
+  target: local
+  outputs:
+    local:
+      type: clickhouse
+      schema: sandbox
+      host: localhost
+      port: 8333
+      user: default
+      password: "{{ env_var('CLICKHOUSE_PASSWORD') }}"
+      secure: False
+      driver: http
+
+    container:
+      type: clickhouse
+      schema: sandbox
+      host: clickhouse_weather
+      port: 8123
+      user: default
+      password: "{{ env_var('CLICKHOUSE_PASSWORD') }}"
+      secure: False
+      driver: http

@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_accuracy_by_horizon_hour
+    description: "Точностть прогноза по городу и часу горизонта"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_id, horizon_hour]
+    columns:
+      - name: n_comparisons
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+
+  - name: mart_accuracy_by_horizon_day
+    description: "Точность прогноза по городу и дню горизонта"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_id, horizon_day]
+
+  - name: mart_accuracy_by_city_overall
+    description: "Точность прогноза по городу, все горизонты вместе"
+    columns:
+      - name: city_id
+        data_tests: [not_null, unique]
